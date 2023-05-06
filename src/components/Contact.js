@@ -32,7 +32,7 @@ export const Contact = () => {
     
     if(formDetails.email && formDetails.firstName && formDetails.lastName && formDetails.message){
       setButtonText("Sending...");
-      let res = await emailjs.sendForm('service_yyw7gpo','template_pjbi0oa',e.target,'6CtWNYVRNqRmedPgn')
+      let res = await emailjs.sendForm('service_g74uuee','template_plzf59e',e.target,'0we0eOCKTnQ36iwzn')
       
       setButtonText("Send");
       setFormDetails(formInitialDetails);

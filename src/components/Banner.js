@@ -12,7 +12,7 @@ export const Banner = () => {
   const [text, setText] = useState('');
   const [delta, setDelta] = useState(300 - Math.random() * 100);
   const [index, setIndex] = useState(1);
-  const toRotate = [ "Jonas Ojeda","Web Developer" ];
+  const toRotate = [ "Danilo Pruneda","Web Developer" ];
   const period = 2000;
 
   useEffect(() => {
@@ -57,8 +57,8 @@ export const Banner = () => {
               {({ isVisible }) =>
               <div className={isVisible ? "animate__animated animate__fadeIn" : ""}>
                 <span className="tagline">Welcome to my Portfolio</span>
-                <h1>{`Hi! I'm`} <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "Jonas Ojeda","Web Developer"]'><span className="wrap">{text}</span></span></h1>
-                  <p><strong>Hello, my name is Jonas. I am a curious person, constantly developing my skills. Prepared to face various challenges and seek solutions. In a work environment, for me the main pillars are commitment and responsibility.</strong></p>
+                <h1>{`Hi! I'm`} <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "Danilo Pruneda","Web Developer"]'><span className="wrap">{text}</span></span></h1>
+                  <p><strong>Hello, my name is Danilo. I am a curious person, constantly developing my skills. Prepared to face various challenges and seek solutions. In a work environment, for me the main pillars are commitment and responsibility.</strong></p>
                   
                   {/* <HashLink to='#connect'> </HashLink> */}
                   <button>Let’s Connect <ArrowRightCircle size={25} /></button>

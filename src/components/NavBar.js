@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { AiFillGithub } from "react-icons/ai";
-import logo from '../assets/img/logo.png';
+import logo from '../assets/img/logo.jpg';
 import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon2 from '../assets/img/github7.png';
 import { HashLink } from 'react-router-hash-link';
@@ -50,8 +50,8 @@ export const NavBar = () => {
             </Nav>
             <span className="navbar-text">
               <div className="social-icon">
-                <a href="https://www.linkedin.com/in/jonas-ojeda-18308a1ab/" target='_blank'><img src={navIcon1} alt="" /></a>
-                <a href="https://github.com/jonasojeda" target='_blank'><img src={navIcon2} alt="" /></a>
+                <a href="https://www.linkedin.com/in/danilophx77/" target='_blank'><img src={navIcon1} alt="" /></a>
+                <a href="https://github.com/danilophx77" target='_blank'><img src={navIcon2} alt="" /></a>
                 
               </div>
               <HashLink to='#connect'>

@@ -1,6 +1,6 @@
 import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
 import { ProjectCard } from "./ProjectCard";
-import pokemon from "../assets/img/pokemon-app.png";
+import ahorcado from "../assets/img/ahorcado.png";
 import colorSharp2 from "../assets/img/color-sharp2.png";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
@@ -9,13 +9,15 @@ export const Projects = () => {
 
   const projects = [
     {
-      title: "Pokemon app",
-      description: "Api rest Pokemon",
-      imgUrl: pokemon,
-      gitHub:"https://github.com/jonasojeda/Pokemn_App",
+      title: "Juego del ahorcado",
+      description: "Alura",
+      imgUrl: ahorcado,
+      gitHub:"https://github.com/danilophx77/ahorcadoAluraOne",
       deploy:"",
-      video:"https://www.youtube.com/watch?v=u4vDry9uJZ0&ab_channel=jonasojeda"
+      video:""
     },
+    
+    
    
   ];
 

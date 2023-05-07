@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import headerImg from "../assets/img/header-img.png";
 import { ArrowRightCircle } from 'react-bootstrap-icons';
-import { HashLink } from 'react-router-hash-link';
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
 
@@ -60,8 +59,12 @@ export const Banner = () => {
                 <h1>{`Hi! I'm`} <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "Danilo Pruneda","Web Developer"]'><span className="wrap">{text}</span></span></h1>
                   <p><strong>Hello, my name is Danilo. I am a curious person, constantly developing my skills. Prepared to face various challenges and seek solutions. In a work environment, for me the main pillars are commitment and responsibility.</strong></p>
                   
-                  {/* <HashLink to='#connect'> </HashLink> */}
-                  <button>Let’s Connect <ArrowRightCircle size={25} /></button>
+                  
+                  <button>
+                    <a href="/cv.pdf" download>Download CV-PDF<ArrowRightCircle size={25} /></a>
+                  </button> 
+
+                  
                   
               </div>}
             </TrackVisibility>

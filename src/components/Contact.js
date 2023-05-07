@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser'
 import contactImg from "../assets/img/contact-img.svg";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
-import validator from "./validator";
+
 
 
 export const Contact = () => {
@@ -36,7 +36,7 @@ export const Contact = () => {
       
       setButtonText("Send");
       setFormDetails(formInitialDetails);
-      if (res.status == 200) {
+      if (res.status === 200) {
         setStatus({clas:'alert alert-success', succes: true, message: 'Message sent successfully'});
       } else {
         setStatus({ clas:'alert alert-danger', succes: false, message: 'Something went wrong, please try again later.'});

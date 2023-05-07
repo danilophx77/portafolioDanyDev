@@ -8,7 +8,7 @@ import express from "../assets/img/express.png"
 import mysql from "../assets/img/MySQL.png"
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import colorSharp from "../assets/img/color-sharp.png"
+
 
 export const Skills = () => {
   const responsive = {
@@ -41,35 +41,35 @@ export const Skills = () => {
                         <p>My skills to highlight are:</p>
                         <Carousel responsive={responsive} infinite={true} className="owl-carousel owl-theme skill-slider">
                             <div className="item">
-                                <img src={reac} alt="Image" />
+                                <img src={reac} alt="Image1" />
                                 <h5>React js</h5>
                             </div>
                             <div className="item">
-                                <img src={node} alt="Image" />
+                                <img src={node} alt="Image2" />
                                 <h5>Node js</h5>
                             </div>
                             <div className="item">
-                                <img src={js} alt="Image" />
+                                <img src={js} alt="Image3" />
                                 <h5>JavaScript</h5>
                             </div>
                             <div className="item">
-                                <img src={html} alt="Image" />
+                                <img src={html} alt="Image4" />
                                 <h5>HTML</h5>
                             </div>
                             <div className="item">
-                                <img src={css} alt="Image" />
+                                <img src={css} alt="Image5" />
                                 <h5>CSS</h5>
                             </div>
                             <div className="item">
-                                <img src={tailwind} alt="Image" />
+                                <img src={tailwind} alt="Image6" />
                                 <h5>Tailwind</h5>
                             </div>
                             <div className="item">
-                                <img src={express} alt="Image" />
+                                <img src={express} alt="Image7" />
                                 <h5>Express js</h5>
                             </div>
                             <div className="item">
-                                <img src={mysql} alt="Image" />
+                                <img src={mysql} alt="Image8" />
                                 <h5>MySQL</h5>
                             </div>
                         </Carousel>

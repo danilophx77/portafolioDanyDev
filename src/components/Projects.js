@@ -16,9 +16,25 @@ export const Projects = () => {
       deploy:"",
       video:""
     },
+    {
+      title: "Juego del ahorcado",
+      description: "Alura",
+      imgUrl: ahorcado,
+      gitHub:"https://github.com/danilophx77/ahorcadoAluraOne",
+      deploy:"",
+      video:""
+    },
+    {
+      title: "Juego del ahorcado",
+      description: "Alura",
+      imgUrl: ahorcado,
+      gitHub:"https://github.com/danilophx77/ahorcadoAluraOne",
+      deploy:"",
+      video:""
+    },
     
     
-   
+  
   ];
 
   return (
@@ -63,7 +79,7 @@ export const Projects = () => {
           </Col>
         </Row>
       </Container>
-      <img className="background-image-right" src={colorSharp2}></img>
+      <img className="background-image-right" src={colorSharp2} alt="background"></img>
     </section>
   )
 }

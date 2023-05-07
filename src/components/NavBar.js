@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { AiFillGithub } from "react-icons/ai";
+
 import logo from '../assets/img/logo.jpg';
 import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon2 from '../assets/img/github7.png';
@@ -37,7 +37,7 @@ export const NavBar = () => {
       <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
         <Container>
           <Navbar.Brand href="/">
-            <img src={logo} alt="Logo" />
+            <img className="logo" src={logo} alt="Logo" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav">
             <span className="navbar-toggler-icon"></span>
@@ -50,8 +50,8 @@ export const NavBar = () => {
             </Nav>
             <span className="navbar-text">
               <div className="social-icon">
-                <a href="https://www.linkedin.com/in/danilophx77/" target='_blank'><img src={navIcon1} alt="" /></a>
-                <a href="https://github.com/danilophx77" target='_blank'><img src={navIcon2} alt="" /></a>
+                <a href="https://www.linkedin.com/in/danilophx77/" target='_blank' rel="noreferrer"><img src={navIcon1} alt="" /></a>
+                <a href="https://github.com/danilophx77" target='_blank' rel="noreferrer"><img src={navIcon2} alt="" /></a>
                 
               </div>
               <HashLink to='#connect'>

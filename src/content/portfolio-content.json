@@ -1,0 +1,281 @@
+{
+  "site": {
+    "name": "Danilo Pruneda",
+    "brand": "DanyDev",
+    "role": "Frontend developer con mentalidad full-stack",
+    "tagline": "Experiencias web con identidad visual, APIs limpias y una base lista para crecer.",
+    "summary": "Diseno y construyo productos web donde la presentacion importa tanto como la estructura tecnica. Este portfolio funciona como vitrina, laboratorio visual y base backend para futuras iteraciones.",
+    "availability": "Disponible para colaboraciones, proyectos freelance y oportunidades remotas.",
+    "resumeUrl": "/cv.pdf"
+  },
+  "hero": {
+    "eyebrow": "Portfolio reimaginado 2026",
+    "titlePrefix": "Interfaces con presencia.",
+    "titleEmphasis": "Backend con criterio.",
+    "titleSuffix": "Producto listo para crecer.",
+    "description": "Trabajo la capa visual para que se vea premium y la capa tecnica para que sea mantenible. El resultado: sitios que comunican mejor, cargan bien y dejan una impresion clara.",
+    "primaryCta": {
+      "label": "Explorar proyectos",
+      "href": "#projects"
+    },
+    "secondaryCta": {
+      "label": "Descargar CV",
+      "href": "/cv.pdf"
+    },
+    "pills": [
+      "React + UX",
+      "Express API",
+      "Responsive first",
+      "Contact flow seguro"
+    ],
+    "spotlight": {
+      "title": "Que hace diferente esta version",
+      "items": [
+        "Frontend redisenado con identidad visual mas fuerte",
+        "Contenido servido por una API propia y reutilizable",
+        "Formulario con validacion, anti-spam y soporte SMTP"
+      ]
+    },
+    "floatingCards": [
+      {
+        "label": "Respuesta habitual",
+        "value": "< 24h"
+      },
+      {
+        "label": "Stack base",
+        "value": "React, Node, Express"
+      }
+    ]
+  },
+  "stats": [
+    {
+      "value": "03",
+      "label": "casos clave curados"
+    },
+    {
+      "value": "08+",
+      "label": "tecnologias principales"
+    },
+    {
+      "value": "100%",
+      "label": "layout responsive"
+    },
+    {
+      "value": "API",
+      "label": "backend listo para conectar"
+    }
+  ],
+  "capabilities": [
+    {
+      "icon": "layout",
+      "title": "Frontend con identidad",
+      "description": "Layouts con mejor jerarquia, ritmo visual y decisiones de diseno que ayudan al mensaje.",
+      "points": [
+        "Hero editoriales y bloques con personalidad",
+        "CSS con variables y sistema visual coherente",
+        "Microinteracciones y movimiento con sentido"
+      ]
+    },
+    {
+      "icon": "code",
+      "title": "Componentes mantenibles",
+      "description": "UI organizada por datos para escalar cambios sin rehacer toda la app.",
+      "points": [
+        "Secciones alimentadas por contenido centralizado",
+        "Estados de carga y fallback local",
+        "Estructura lista para nuevas secciones o CMS"
+      ]
+    },
+    {
+      "icon": "server",
+      "title": "Backend util de verdad",
+      "description": "La parte de servidor ahora deja de ser un extra y se convierte en una base funcional.",
+      "points": [
+        "Endpoints para contenido, proyectos, skills y salud",
+        "Contacto con validacion y control por tasa",
+        "Configuracion por variables de entorno para correo"
+      ]
+    }
+  ],
+  "skillMatrix": [
+    {
+      "title": "Frontend",
+      "items": [
+        "React",
+        "JavaScript ES6+",
+        "HTML semantico",
+        "CSS architecture",
+        "Responsive design",
+        "Animacion ligera"
+      ]
+    },
+    {
+      "title": "Backend",
+      "items": [
+        "Node.js",
+        "Express",
+        "REST API",
+        "Nodemailer",
+        "Validacion de formularios",
+        "Configuracion por entorno"
+      ]
+    },
+    {
+      "title": "Producto",
+      "items": [
+        "UX thinking",
+        "Accesibilidad",
+        "Jerarquia de contenido",
+        "Performance basica",
+        "Mantenibilidad",
+        "Preparacion para deploy"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "The Classic Barbershop",
+      "category": "Frontend",
+      "year": "Actual",
+      "summary": "Sitio corporativo para una barberia en Las Condes, enfocado en presentar servicios, facilitar reservas y reforzar una identidad visual clasica y premium.",
+      "impact": "Mejora la presencia digital del negocio al reunir informacion clave, contacto, horarios y acceso directo a reserva en una experiencia clara y elegante.",
+      "stack": [
+        "Landing Comercial",
+        "Reservas",
+        "Contenido de Servicios",
+        "Branding Web"
+      ],
+      "links": {
+        "github": "",
+        "live": "https://theclassicbarbershop.cl/"
+      },
+      "accent": "#c79a5b",
+      "featured": true
+    },
+    {
+      "title": "API de Contacto Segura",
+      "category": "Backend",
+      "year": "2026",
+      "summary": "Backend con endpoints dedicados para contenido y contacto, proteccion anti-spam, validacion de payload y soporte para envio de correo por SMTP.",
+      "impact": "La app deja de depender de integraciones fragiles en el cliente y gana una base backend mas profesional.",
+      "stack": [
+        "Node.js",
+        "Express",
+        "CORS",
+        "SMTP"
+      ],
+      "links": {
+        "github": "https://github.com/danilophx77/portafolioDanyDev.git",
+        "live": ""
+      },
+      "accent": "#1fd1c2",
+      "featured": true
+    },
+    {
+      "title": "Odore site",
+      "category": "Frontend",
+      "year": "Actual",
+      "summary": "Sitio web pensado para presentar la identidad de Odore con una propuesta visual elegante, secciones informativas claras y una experiencia centrada en marca.",
+      "impact": "Ayuda a comunicar mejor la esencia del proyecto, reforzar presencia digital y ofrecer una navegacion mas limpia y atractiva.",
+      "stack": [
+        "Frontend UI",
+        "Responsive Design",
+        "Branding Web"
+      ],
+      "links": {
+        "github": "",
+        "live": "https://laodore.com.br/"
+      },
+      "accent": "#9be15d",
+      "featured": false
+    }
+  ],
+  "workflow": [
+    {
+      "step": "01",
+      "title": "Enfocar el mensaje",
+      "description": "Antes de tocar estilos, ordeno el discurso del producto o portfolio para que cada bloque tenga una funcion concreta.",
+      "deliverables": [
+        "Jerarquia de contenido",
+        "CTA principal",
+        "Narrativa de la pagina"
+      ]
+    },
+    {
+      "step": "02",
+      "title": "Construir una UI con caracter",
+      "description": "Trabajo la experiencia visual con contraste, espaciado, ritmo y detalles que hagan el sitio mas memorable.",
+      "deliverables": [
+        "Sistema visual",
+        "Componentes reutilizables",
+        "Motion sutil"
+      ]
+    },
+    {
+      "step": "03",
+      "title": "Conectar la capa tecnica",
+      "description": "Integro API, validaciones y configuracion para que el resultado sea util tambien del lado del servidor.",
+      "deliverables": [
+        "Endpoints REST",
+        "Formulario robusto",
+        "Base lista para despliegue"
+      ]
+    }
+  ],
+  "contact": {
+    "headline": "Hablemos de tu siguiente build",
+    "description": "Si quieres renovar tu presencia digital o construir una interfaz desde cero, este portfolio ya esta preparado para recibir mensajes desde una API propia.",
+    "channels": [
+      {
+        "type": "github",
+        "label": "GitHub",
+        "value": "danilophx77",
+        "href": "https://github.com/danilophx77"
+      },
+      {
+        "type": "linkedin",
+        "label": "LinkedIn",
+        "value": "danilophx77",
+        "href": "https://www.linkedin.com/in/danilophx77/"
+      },
+      {
+        "type": "resume",
+        "label": "CV",
+        "value": "Descargar PDF",
+        "href": "/cv.pdf"
+      }
+    ],
+    "form": {
+      "successMessage": "Mensaje enviado correctamente. Te respondere lo antes posible.",
+      "queuedMessage": "Mensaje recibido. El backend ya esta listo; solo falta conectar las credenciales SMTP para el envio real por correo.",
+      "fallbackMessage": "La API de contacto no esta disponible en este momento. Mientras tanto, puedes escribirme por LinkedIn o revisar mi GitHub.",
+      "responseTime": "Tiempo estimado de respuesta: menos de 24 horas."
+    }
+  },
+  "faq": [
+    {
+      "question": "Que tipo de proyectos puedo desarrollar?",
+      "answer": "Portfolios, landings, interfaces promocionales, dashboards ligeros y APIs pequenas o medianas para formularios y contenido."
+    },
+    {
+      "question": "Solo trabajo el frontend?",
+      "answer": "Mi foco fuerte esta en frontend, pero puedo conectar la capa backend necesaria para formularios, contenido y despliegues basicos."
+    },
+    {
+      "question": "Este portfolio ya esta listo para evolucionar?",
+      "answer": "Si. El contenido vive separado, el frontend consume API y el backend quedo preparado para crecer con nuevas rutas y servicios."
+    }
+  ],
+  "socialLinks": [
+    {
+      "label": "GitHub",
+      "href": "https://github.com/danilophx77",
+      "icon": "github"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/in/danilophx77/",
+      "icon": "linkedin"
+    }
+  ]
+}

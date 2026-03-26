@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("renders the redesigned portfolio content", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  expect(screen.getByText(/Portfolio reimaginado 2026/i)).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /Explorar proyectos/i })).toBeInTheDocument();
+  expect(screen.getByText(/Hablemos de tu siguiente build/i)).toBeInTheDocument();
 });

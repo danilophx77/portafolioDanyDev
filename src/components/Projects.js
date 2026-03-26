@@ -1,85 +1,100 @@
-import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
-import { ProjectCard } from "./ProjectCard";
-import ahorcado from "../assets/img/ahorcado.png";
-import colorSharp2 from "../assets/img/color-sharp2.png";
-import 'animate.css';
-import TrackVisibility from 'react-on-screen';
+import { useDeferredValue, useState } from "react";
+import { FiArrowUpRight, FiGithub } from "react-icons/fi";
 
-export const Projects = () => {
+export const Projects = ({ projects }) => {
+  const categories = ["Todos", ...new Set(projects.map((project) => project.category))];
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const deferredCategory = useDeferredValue(selectedCategory);
 
-  const projects = [
-    {
-      title: "Juego del ahorcado",
-      description: "Alura",
-      imgUrl: ahorcado,
-      gitHub:"https://github.com/danilophx77/ahorcadoAluraOne",
-      deploy:"",
-      video:""
-    },
-    {
-      title: "Juego del ahorcado",
-      description: "Alura",
-      imgUrl: ahorcado,
-      gitHub:"https://github.com/danilophx77/ahorcadoAluraOne",
-      deploy:"",
-      video:""
-    },
-    {
-      title: "Juego del ahorcado",
-      description: "Alura",
-      imgUrl: ahorcado,
-      gitHub:"https://github.com/danilophx77/ahorcadoAluraOne",
-      deploy:"",
-      video:""
-    },
-    
-    
-  
-  ];
+  const visibleProjects =
+    deferredCategory === "Todos"
+      ? projects
+      : projects.filter((project) => project.category === deferredCategory);
 
   return (
-    <section className="project" id="project">
-      <Container>
-        <Row>
-          <Col size={12}>
-            <TrackVisibility>
-              {({ isVisible }) =>
-              <div className={isVisible ? "animate__animated animate__fadeIn": ""}>
-                <h2>Projects</h2>
-                <p>My completed projects are:</p>
-                <Tab.Container id="projects-tabs" defaultActiveKey="first">
-                  <Nav variant="pills" className="nav-pills mb-5 justify-content-center align-items-center" id="pills-tab">
-                    
-                  </Nav>
-                  <Tab.Content id="slideInUp" className={isVisible ? "animate__animated animate__slideInUp" : ""}>
-                    <Tab.Pane eventKey="first">
-                      <Row>
-                        {
-                          projects.map((project, index) => {
-                            return (
-                              <ProjectCard
-                                key={index}
-                                {...project}
-                                />
-                            )
-                          })
-                        }
-                      </Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="section">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quam, quod neque provident velit, rem explicabo excepturi id illo molestiae blanditiis, eligendi dicta officiis asperiores delectus quasi inventore debitis quo.</p>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="third">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quam, quod neque provident velit, rem explicabo excepturi id illo molestiae blanditiis, eligendi dicta officiis asperiores delectus quasi inventore debitis quo.</p>
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Tab.Container>
-              </div>}
-            </TrackVisibility>
-          </Col>
-        </Row>
-      </Container>
-      <img className="background-image-right" src={colorSharp2} alt="background"></img>
+    <section className="section-shell" id="projects">
+      <div className="section-container">
+        <div className="section-header section-header-inline">
+          <div>
+            <p className="section-eyebrow">Casos seleccionados</p>
+            <h2>Trabajo con mejor foco visual y mejor fundamento tecnico.</h2>
+          </div>
+
+          <p className="section-header-copy">
+            Este redisenio ya no ensena solo tarjetas sueltas. Presenta mejor el
+            valor del proyecto, el stack que usa y el impacto tecnico de cada
+            bloque.
+          </p>
+        </div>
+
+        <div className="project-filter-bar" role="tablist" aria-label="Filtrar proyectos">
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={
+                selectedCategory === category
+                  ? "project-filter project-filter-active"
+                  : "project-filter"
+              }
+              type="button"
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <div className="project-grid">
+          {visibleProjects.map((project) => (
+            <article
+              className="project-card"
+              key={project.title}
+              style={{ "--project-accent": project.accent }}
+            >
+              <div className="project-card-top">
+                <div>
+                  <p className="project-category">{project.category}</p>
+                  <h3>{project.title}</h3>
+                </div>
+                <span className="project-year">{project.year}</span>
+              </div>
+
+              {project.featured ? <span className="featured-pill">Featured</span> : null}
+
+              <p className="project-summary">{project.summary}</p>
+              <p className="project-impact">{project.impact}</p>
+
+              <div className="chip-list">
+                {project.stack.map((item) => (
+                  <span className="skill-chip" key={item}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <div className="project-actions">
+                {project.links.github ? (
+                  <a href={project.links.github} target="_blank" rel="noreferrer">
+                    <FiGithub />
+                    <span>Repositorio</span>
+                  </a>
+                ) : null}
+
+                {project.links.live ? (
+                  <a href={project.links.live} target="_blank" rel="noreferrer">
+                    <FiArrowUpRight />
+                    <span>Live</span>
+                  </a>
+                ) : null}
+
+                {!project.links.github && !project.links.live ? (
+                  <span className="project-preview-muted">Enlace pendiente de agregar</span>
+                ) : null}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
     </section>
-  )
-}
+  );
+};

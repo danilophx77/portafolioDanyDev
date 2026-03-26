@@ -1,34 +1,37 @@
-# Personal Portfolio Website in React
+# DanyDev Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Portfolio redisenado con un frontend mas fuerte visualmente y un backend Express que sirve contenido y procesa mensajes de contacto.
 
-Built using:
+## Scripts
 
-- Front-end library: React
-- CSS framework: React-bootstrap
-- CSS animations library: Animate.css
+- `npm start`: arranca el frontend de React en desarrollo.
+- `npm run server`: arranca la API local en `http://localhost:5000`.
+- `npm run build`: genera la version de produccion del frontend.
+- `npm test -- --watch=false`: ejecuta los tests una vez.
 
-In the /personal-portfolio, you can run:
+## Backend
 
-### `npm start`
+La API expone estas rutas:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- `GET /api/health`
+- `GET /api/content`
+- `GET /api/projects`
+- `GET /api/skills`
+- `POST /api/contact`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+El formulario incluye validacion, honeypot anti-spam y control basico por tasa.
 
-### `npm test`
+## Variables de entorno
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Duplica `.env.example` a `.env` para activar el envio real por correo:
 
-### `npm run build`
+- `CLIENT_ORIGIN`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_SECURE`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `CONTACT_TO_EMAIL`
+- `CONTACT_FROM_EMAIL`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Si no configuras SMTP, la API seguira aceptando mensajes y respondera en modo `queued`.

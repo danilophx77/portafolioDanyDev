@@ -1,84 +1,143 @@
-import { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import headerImg from "../assets/img/header-img.png";
-import { ArrowRightCircle } from 'react-bootstrap-icons';
-import 'animate.css';
-import TrackVisibility from 'react-on-screen';
+import headerImg from "../assets/img/header-img.svg";
+import {
+  FiActivity,
+  FiArrowRight,
+  FiDownload,
+  FiGithub,
+  FiLinkedin,
+} from "react-icons/fi";
 
-export const Banner = () => {
-  const [loopNum, setLoopNum] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [text, setText] = useState('');
-  const [delta, setDelta] = useState(300 - Math.random() * 100);
-  const [index, setIndex] = useState(1);
-  const toRotate = [ "Danilo Pruneda","Web Developer" ];
-  const period = 2000;
+const iconMap = {
+  download: FiDownload,
+  github: FiGithub,
+  linkedin: FiLinkedin,
+};
 
-  useEffect(() => {
-    let ticker = setInterval(() => {
-      tick();
-    }, delta);
-
-    return () => { clearInterval(ticker) };
-  }, [text])
-
-  const tick = () => {
-    let i = loopNum % toRotate.length;
-    let fullText = toRotate[i];
-    let updatedText = isDeleting ? fullText.substring(0, text.length - 1) : fullText.substring(0, text.length + 1);
-
-    setText(updatedText);
-
-    if (isDeleting) {
-      setDelta(prevDelta => prevDelta / 2);
-    }
-
-    if (!isDeleting && updatedText === fullText) {
-      setIsDeleting(true);
-      setIndex(prevIndex => prevIndex - 1);
-      setDelta(period);
-    } else if (isDeleting && updatedText === '') {
-      setIsDeleting(false);
-      setLoopNum(loopNum + 1);
-      setIndex(1);
-      setDelta(500);
-    } else {
-      setIndex(prevIndex => prevIndex + 1);
-    }
-  }
+export const Banner = ({
+  hero,
+  site,
+  stats,
+  socialLinks,
+  isLoading,
+  source,
+  error,
+}) => {
+  const sourceMessage = isLoading
+    ? "Sincronizando contenido..."
+    : source === "api"
+      ? "Contenido servido por la API local."
+      : "Mostrando contenido local mientras la API no responde.";
 
   return (
-    <section className="banner" id="home">
-      <Container>
-        <Row className="aligh-items-center">
-          <Col xs={12} md={6} xl={7}>
-            <TrackVisibility>
-              {({ isVisible }) =>
-              <div className={isVisible ? "animate__animated animate__fadeIn" : ""}>
-                <span className="tagline">Welcome to my Portfolio</span>
-                <h1>{`Hi! I'm`} <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "Danilo Pruneda","Web Developer"]'><span className="wrap">{text}</span></span></h1>
-                  <p><strong>Hello, my name is Danilo. I am a curious person, constantly developing my skills. Prepared to face various challenges and seek solutions. In a work environment, for me the main pillars are commitment and responsibility.</strong></p>
-                  
-                  
-                  <button>
-                    <a href="/cv.pdf" download>Download CV-PDF<ArrowRightCircle size={25} /></a>
-                  </button> 
+    <section className="hero section-shell" id="home">
+      <div className="section-container hero-grid">
+        <div className="hero-copy">
+          <p className="section-eyebrow">{hero.eyebrow}</p>
+          <p className="hero-kicker">{site.tagline}</p>
 
-                  
-                  
-              </div>}
-            </TrackVisibility>
-          </Col>
-          <Col xs={12} md={6} xl={5}>
-            <TrackVisibility>
-              {({ isVisible }) =>
-                <div className={isVisible ? "animate__animated animate__zoomIn" : ""}>
-                  <img src={headerImg} alt="Header Img"/>
-                </div>}
-            </TrackVisibility>
-          </Col>
-        </Row>
-      </Container>
+          <h1 className="hero-title">
+            <span>{hero.titlePrefix}</span>
+            <span className="hero-title-accent">{hero.titleEmphasis}</span>
+            <span>{hero.titleSuffix}</span>
+          </h1>
+
+          <p className="hero-description">{hero.description}</p>
+          <p className="hero-summary">{site.summary}</p>
+
+          <div className="hero-pill-row" aria-label="Puntos clave">
+            {hero.pills.map((pill) => (
+              <span className="hero-pill" key={pill}>
+                {pill}
+              </span>
+            ))}
+          </div>
+
+          <div className="hero-actions">
+            <a className="button-primary" href={hero.primaryCta.href}>
+              <span>{hero.primaryCta.label}</span>
+              <FiArrowRight />
+            </a>
+
+            <a className="button-secondary" href={hero.secondaryCta.href} download>
+              <span>{hero.secondaryCta.label}</span>
+              <FiDownload />
+            </a>
+          </div>
+
+          <div className="hero-social-row">
+            {socialLinks.map((link) => {
+              const Icon = iconMap[link.icon] || FiGithub;
+              const isResume = link.icon === "download";
+
+              return (
+                <a
+                  key={link.label}
+                  className="hero-social-link"
+                  href={link.href}
+                  target={isResume ? "_self" : "_blank"}
+                  rel="noreferrer"
+                  download={isResume}
+                >
+                  <Icon />
+                  <span>{link.label}</span>
+                </a>
+              );
+            })}
+          </div>
+
+          <div className={`hero-status ${source === "api" ? "hero-status-live" : "hero-status-local"}`}>
+            <FiActivity />
+            <span>{sourceMessage}</span>
+          </div>
+
+          {error ? <p className="hero-error">Detalle: {error}</p> : null}
+        </div>
+
+        <div className="hero-visual">
+          <div className="portrait-card">
+            <div className="portrait-orb portrait-orb-left" aria-hidden="true" />
+            <div className="portrait-orb portrait-orb-right" aria-hidden="true" />
+            <img src={headerImg} alt="Ilustracion de desarrollo y diseno web" />
+
+            {hero.floatingCards.map((card, index) => (
+              <div
+                className="floating-badge"
+                key={card.label}
+                style={
+                  index === 0
+                    ? { top: "1.3rem", right: "1.4rem" }
+                    : { bottom: "1.5rem", left: "1.3rem", right: "auto" }
+                }
+              >
+                <span>{card.label}</span>
+                <strong>{card.value}</strong>
+              </div>
+            ))}
+          </div>
+
+          <aside className="spotlight-card">
+            <p className="spotlight-label">{hero.spotlight.title}</p>
+            <ul className="spotlight-list">
+              {hero.spotlight.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="availability-chip">
+              <span className="availability-dot" aria-hidden="true" />
+              <span>{site.availability}</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div className="section-container stats-grid" aria-label="Metricas destacadas">
+        {stats.map((item) => (
+          <article className="stat-card" key={item.label}>
+            <strong>{item.value}</strong>
+            <span>{item.label}</span>
+          </article>
+        ))}
+      </div>
     </section>
-  )
-}
+  );
+};

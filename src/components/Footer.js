@@ -1,29 +1,48 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { FiDownload, FiGithub, FiLinkedin } from "react-icons/fi";
 
-import logo from "../assets/img/logo.jpg";
-import navIcon1 from '../assets/img/nav-icon1.svg';
-import navIcon2 from '../assets/img/github7.png';
+const iconMap = {
+  download: FiDownload,
+  github: FiGithub,
+  linkedin: FiLinkedin,
+};
 
-export const Footer = () => {
+export const Footer = ({ site, socialLinks }) => {
   return (
-    <footer className="footer">
-      <Container>
-        <Row className="align-items-center">
-          
-          <Col size={12} sm={6}>
-            <img className="logo" src={logo} alt="Logo" />
-          </Col>
-          <Col size={12} sm={6} className="text-center text-sm-end">
-            <div className="social-icon">
-              <a href="https://www.linkedin.com/in/danilophx77/" target='_blank'rel="noreferrer"><img src={navIcon1} alt="" /></a>
-              <a href="https://github.com/danilophx77" target='_blank'rel="noreferrer"><img src={navIcon2} alt="" /></a>
-                
-              
-            </div>
-            <p>Copyright 2023. All Rights Reserved</p>
-          </Col>
-        </Row>
-      </Container>
+    <footer className="site-footer">
+      <div className="section-container footer-inner">
+        <div className="footer-brand">
+          <span className="brand-mark">DP</span>
+          <div>
+            <strong>{site.brand}</strong>
+            <p>{site.role}</p>
+          </div>
+        </div>
+
+        <p className="footer-copy">
+          {site.name}. {site.tagline}
+        </p>
+
+        <div className="footer-links">
+          {socialLinks.map((link) => {
+            const Icon = iconMap[link.icon] || FiGithub;
+            const isResume = link.icon === "download";
+
+            return (
+              <a
+                key={link.label}
+                className="icon-button"
+                href={link.href}
+                target={isResume ? "_self" : "_blank"}
+                rel="noreferrer"
+                download={isResume}
+                aria-label={link.label}
+              >
+                <Icon />
+              </a>
+            );
+          })}
+        </div>
+      </div>
     </footer>
-  )
-}
+  );
+};

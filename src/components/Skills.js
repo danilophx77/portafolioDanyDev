@@ -1,83 +1,96 @@
-import reac from "../assets/img/react.png";
-import node from "../assets/img/node.png";
-import js from "../assets/img/js.png";
-import html from "../assets/img/html.svg"
-import css from "../assets/img/css.png"
-import tailwind from "../assets/img/tailwind.png"
-import express from "../assets/img/express.png"
-import mysql from "../assets/img/MySQL.png"
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+import { FiCode, FiLayout, FiServer } from "react-icons/fi";
 
+const iconMap = {
+  code: FiCode,
+  layout: FiLayout,
+  server: FiServer,
+};
 
-export const Skills = () => {
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
-  };
-
+export const Skills = ({ capabilities, skillMatrix, workflow }) => {
   return (
-    <section className="skill" id="skills">
-        <div className="container">
-            <div className="row">
-                <div className="col-12">
-                    <div className="skill-bx wow zoomIn">
-                        <h2>Skills</h2>
-                        <p>My skills to highlight are:</p>
-                        <Carousel responsive={responsive} infinite={true} className="owl-carousel owl-theme skill-slider">
-                            <div className="item">
-                                <img src={reac} alt="Image1" />
-                                <h5>React js</h5>
-                            </div>
-                            <div className="item">
-                                <img src={node} alt="Image2" />
-                                <h5>Node js</h5>
-                            </div>
-                            <div className="item">
-                                <img src={js} alt="Image3" />
-                                <h5>JavaScript</h5>
-                            </div>
-                            <div className="item">
-                                <img src={html} alt="Image4" />
-                                <h5>HTML</h5>
-                            </div>
-                            <div className="item">
-                                <img src={css} alt="Image5" />
-                                <h5>CSS</h5>
-                            </div>
-                            <div className="item">
-                                <img src={tailwind} alt="Image6" />
-                                <h5>Tailwind</h5>
-                            </div>
-                            <div className="item">
-                                <img src={express} alt="Image7" />
-                                <h5>Express js</h5>
-                            </div>
-                            <div className="item">
-                                <img src={mysql} alt="Image8" />
-                                <h5>MySQL</h5>
-                            </div>
-                        </Carousel>
-                    </div>
-                </div>
-            </div>
+    <section className="section-shell" id="skills">
+      <div className="section-container">
+        <div className="section-header">
+          <p className="section-eyebrow">Arquitectura y stack</p>
+          <h2>Una base mas fuerte para diseno, desarrollo y evolucion.</h2>
+          <p>
+            El portfolio ahora esta construido para comunicar mejor y para
+            escalar cambios sin romper su estructura. La parte visual y la
+            parte tecnica avanzan juntas.
+          </p>
         </div>
-        
+
+        <div className="capability-grid">
+          {capabilities.map((capability) => {
+            const Icon = iconMap[capability.icon] || FiCode;
+
+            return (
+              <article className="capability-card" key={capability.title}>
+                <div className="capability-icon">
+                  <Icon />
+                </div>
+                <h3>{capability.title}</h3>
+                <p>{capability.description}</p>
+                <ul className="capability-points">
+                  {capability.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="skills-layout">
+          <article className="matrix-card">
+            <div className="card-heading">
+              <p className="section-eyebrow">Skill matrix</p>
+              <h3>Tecnologias y criterios que sostienen el sitio</h3>
+            </div>
+
+            <div className="matrix-groups">
+              {skillMatrix.map((group) => (
+                <section className="matrix-group" key={group.title}>
+                  <h4>{group.title}</h4>
+                  <div className="chip-list">
+                    {group.items.map((item) => (
+                      <span className="skill-chip" key={item}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </article>
+
+          <article className="workflow-card">
+            <div className="card-heading">
+              <p className="section-eyebrow">Como trabajo</p>
+              <h3>Proceso corto, claro y orientado a resultado</h3>
+            </div>
+
+            <div className="workflow-list">
+              {workflow.map((item) => (
+                <div className="workflow-item" key={item.step}>
+                  <div className="workflow-step">{item.step}</div>
+                  <div className="workflow-copy">
+                    <h4>{item.title}</h4>
+                    <p>{item.description}</p>
+                    <div className="deliverable-list">
+                      {item.deliverables.map((deliverable) => (
+                        <span className="deliverable-pill" key={deliverable}>
+                          {deliverable}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
+      </div>
     </section>
-  )
-}
+  );
+};

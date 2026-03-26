@@ -1,108 +1,224 @@
 import { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import emailjs from '@emailjs/browser'
-import contactImg from "../assets/img/contact-img.svg";
-import 'animate.css';
-import TrackVisibility from 'react-on-screen';
+import {
+  FiClock,
+  FiDownload,
+  FiGithub,
+  FiLinkedin,
+  FiSend,
+} from "react-icons/fi";
 
+const initialForm = {
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+  company: "",
+};
 
+const channelIcons = {
+  github: FiGithub,
+  linkedin: FiLinkedin,
+  resume: FiDownload,
+};
 
-export const Contact = () => {
+export const Contact = ({ contact, faq }) => {
+  const [formValues, setFormValues] = useState(initialForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState({ type: "", message: "" });
 
-  const formInitialDetails = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    message: ''
-  }
-  const [formDetails, setFormDetails] = useState(formInitialDetails);
-  const [buttonText, setButtonText] = useState('Send');
-  const [status, setStatus] = useState({});
+  const onFieldChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [name]: value,
+    }));
+  };
 
-  const onFormUpdate = (category, value) => {
-      setFormDetails({
-        ...formDetails,
-        [category]: value
-      })
-  }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if(formDetails.email && formDetails.firstName && formDetails.lastName && formDetails.message){
-      setButtonText("Sending...");
-      let res = await emailjs.sendForm('service_g74uuee','template_plzf59e',e.target,'0we0eOCKTnQ36iwzn')
-      
-      setButtonText("Send");
-      setFormDetails(formInitialDetails);
-      if (res.status === 200) {
-        setStatus({clas:'alert alert-success', succes: true, message: 'Message sent successfully'});
-      } else {
-        setStatus({ clas:'alert alert-danger', succes: false, message: 'Something went wrong, please try again later.'});
-      }
-    }else{
-      setStatus({clas:'alert alert-danger', succes: true, message: 'Please complete the required fields *.'});
+    if (!formValues.name.trim() || !formValues.email.trim() || !formValues.message.trim()) {
+      setStatus({
+        type: "error",
+        message: "Completa nombre, email y mensaje antes de enviar.",
+      });
+      return;
     }
 
-    
+    if (formValues.message.trim().length < 20) {
+      setStatus({
+        type: "error",
+        message: "El mensaje debe tener al menos 20 caracteres.",
+      });
+      return;
+    }
 
+    setIsSubmitting(true);
+    setStatus({ type: "", message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues),
+      });
+
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(payload.message || "No se pudo enviar el mensaje.");
+      }
+
+      setStatus({
+        type: "success",
+        message:
+          payload.delivery === "smtp"
+            ? contact.form.successMessage
+            : payload.message || contact.form.queuedMessage,
+      });
+      setFormValues(initialForm);
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message: error instanceof Error ? error.message : contact.form.fallbackMessage,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section className="contact" id="connect">
-      <Container>
-        <Row className="align-items-center">
-          <Col size={12} md={6}>
-            <TrackVisibility>
-              {({ isVisible }) =>
-                <img className={isVisible ? "animate__animated animate__zoomIn" : ""} src={contactImg} alt="Contact Us"/>
-              }
-            </TrackVisibility>
-          </Col>
-          <Col size={12} md={6}>
-            <TrackVisibility>
-              {({ isVisible }) =>
-                <div className={isVisible ? "animate__animated animate__fadeIn" : ""}>
-                <h2>Get In Touch</h2>
-                <form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col size={12} sm={6} className="px-1">
-                      <input name="firstName" type="text" value={formDetails.firstName} placeholder="First Name *" onChange={(e) => onFormUpdate('firstName', e.target.value)} />
-                    </Col>
-                    <Col size={12} sm={6} className="px-1">
-                      <input name="lastName" type="text" value={formDetails.lastName} placeholder="Last Name *" onChange={(e) => onFormUpdate('lastName', e.target.value)}/>
-                    </Col>
-                    <Col size={12} sm={6} className="px-1">
-                      <input name="email" type="email" value={formDetails.email} placeholder="Email Address *" onChange={(e) => onFormUpdate('email', e.target.value)} />
-                    </Col>
-                    <Col size={12} sm={6} className="px-1">
-                      <input name="phone" type="tel" value={formDetails.phone} placeholder="Phone No." onChange={(e) => onFormUpdate('phone', e.target.value)}/>
-                    </Col>
-                    <Col size={12} className="px-1">
-                      <textarea name="message" rows="6" value={formDetails.message} placeholder="Message *" onChange={(e) => onFormUpdate('message', e.target.value)}></textarea>
-                      {
-                      status.message &&
-                        
-                        <div class={status.clas} role="alert">
-                          {status.message}
-                        </div>
-                        // <div className={status.success === false ? "alert alert-error shadow-lg" : "alert alert-success shadow-lg"}>
-                        // <div>
-                        //   <span>{status.message}</span>
-                        // </div>
-                        // </div>
-                      }
-                      <button type="submit"><span>{buttonText}</span></button>
-                    </Col>
-                    
-                  </Row>
-                </form>
-              </div>}
-            </TrackVisibility>
-          </Col>
-        </Row>
-      </Container>
+    <section className="section-shell" id="contact">
+      <div className="section-container contact-layout">
+        <div className="contact-sidebar">
+          <div className="contact-card">
+            <p className="section-eyebrow">Contacto</p>
+            <h2>{contact.headline}</h2>
+            <p>{contact.description}</p>
+
+            <div className="response-card">
+              <FiClock />
+              <span>{contact.form.responseTime}</span>
+            </div>
+
+            <div className="channel-list">
+              {contact.channels.map((channel) => {
+                const Icon = channelIcons[channel.type] || FiGithub;
+                const isResume = channel.type === "resume";
+
+                return (
+                  <a
+                    className="channel-card"
+                    key={channel.label}
+                    href={channel.href}
+                    target={isResume ? "_self" : "_blank"}
+                    rel="noreferrer"
+                    download={isResume}
+                  >
+                    <span className="channel-icon">
+                      <Icon />
+                    </span>
+                    <span className="channel-copy">
+                      <strong>{channel.label}</strong>
+                      <span>{channel.value}</span>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="faq-card">
+            <p className="section-eyebrow">FAQ rapido</p>
+            <div className="faq-list">
+              {faq.map((item) => (
+                <details key={item.question}>
+                  <summary>{item.question}</summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <form className="contact-form-card" onSubmit={handleSubmit}>
+          <div className="card-heading">
+            <p className="section-eyebrow">Formulario conectado a API</p>
+            <h3>Cuentame que quieres construir o mejorar</h3>
+          </div>
+
+          <div className="form-grid">
+            <label>
+              <span>Nombre</span>
+              <input
+                name="name"
+                type="text"
+                placeholder="Tu nombre"
+                value={formValues.name}
+                onChange={onFieldChange}
+              />
+            </label>
+
+            <label>
+              <span>Email</span>
+              <input
+                name="email"
+                type="email"
+                placeholder="tu@email.com"
+                value={formValues.email}
+                onChange={onFieldChange}
+              />
+            </label>
+
+            <label className="form-grid-full">
+              <span>Asunto</span>
+              <input
+                name="subject"
+                type="text"
+                placeholder="Redisenio, landing, portfolio, API..."
+                value={formValues.subject}
+                onChange={onFieldChange}
+              />
+            </label>
+
+            <label className="form-grid-full form-honeypot">
+              <span>Empresa</span>
+              <input
+                name="company"
+                type="text"
+                tabIndex="-1"
+                autoComplete="off"
+                value={formValues.company}
+                onChange={onFieldChange}
+              />
+            </label>
+
+            <label className="form-grid-full">
+              <span>Mensaje</span>
+              <textarea
+                name="message"
+                rows="7"
+                placeholder="Describe la idea, el objetivo del sitio o que parte quieres mejorar."
+                value={formValues.message}
+                onChange={onFieldChange}
+              />
+            </label>
+          </div>
+
+          {status.message ? (
+            <div className={status.type === "success" ? "form-status form-status-success" : "form-status form-status-error"}>
+              {status.message}
+            </div>
+          ) : null}
+
+          <button className="button-primary contact-submit" type="submit" disabled={isSubmitting}>
+            <span>{isSubmitting ? "Enviando..." : "Enviar mensaje"}</span>
+            <FiSend />
+          </button>
+        </form>
+      </div>
     </section>
-  )
-}
+  );
+};

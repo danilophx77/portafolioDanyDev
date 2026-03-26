@@ -1,66 +1,133 @@
-import { useState, useEffect } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-
-import logo from '../assets/img/logo.jpg';
-import navIcon1 from '../assets/img/nav-icon1.svg';
-import navIcon2 from '../assets/img/github7.png';
-import { HashLink } from 'react-router-hash-link';
+import { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router
-} from "react-router-dom";
+  FiDownload,
+  FiGithub,
+  FiLinkedin,
+  FiMenu,
+  FiX,
+} from "react-icons/fi";
 
-export const NavBar = () => {
+const SECTION_LINKS = [
+  { id: "home", label: "Inicio" },
+  { id: "skills", label: "Stack" },
+  { id: "projects", label: "Proyectos" },
+  { id: "contact", label: "Contacto" },
+];
 
-  const [activeLink, setActiveLink] = useState('home');
-  const [scrolled, setScrolled] = useState(false);
+const iconMap = {
+  download: FiDownload,
+  github: FiGithub,
+  linkedin: FiLinkedin,
+};
+
+export const NavBar = ({ site, socialLinks }) => {
+  const [activeLink, setActiveLink] = useState("home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    }
+      setIsScrolled(window.scrollY > 24);
+    };
 
+    onScroll();
     window.addEventListener("scroll", onScroll);
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, [])
+  }, []);
 
-  const onUpdateActiveLink = (value) => {
-    setActiveLink(value);
-  }
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") {
+      return undefined;
+    }
+
+    const sections = SECTION_LINKS.map(({ id }) => document.getElementById(id)).filter(Boolean);
+
+    if (!sections.length) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((entryA, entryB) => entryB.intersectionRatio - entryA.intersectionRatio)[0];
+
+        if (visibleEntry) {
+          setActiveLink(visibleEntry.target.id);
+        }
+      },
+      {
+        threshold: [0.2, 0.35, 0.6],
+        rootMargin: "-45% 0px -40% 0px",
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <Router>
-      <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
-        <Container>
-          <Navbar.Brand href="/">
-            <img className="logo" src={logo} alt="Logo" />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav">
-            <span className="navbar-toggler-icon"></span>
-          </Navbar.Toggle>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link href="#home" className={activeLink === 'home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Home</Nav.Link>
-              <Nav.Link href="#skills" className={activeLink === 'skills' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('skills')}>Skills</Nav.Link>
-              <Nav.Link href="#project" className={activeLink === 'project' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('project')}>Projects</Nav.Link>
-            </Nav>
-            <span className="navbar-text">
-              <div className="social-icon">
-                <a href="https://www.linkedin.com/in/danilophx77/" target='_blank' rel="noreferrer"><img src={navIcon1} alt="" /></a>
-                <a href="https://github.com/danilophx77" target='_blank' rel="noreferrer"><img src={navIcon2} alt="" /></a>
-                
-              </div>
-              <HashLink to='#connect'>
-                <button className="vvd"><span>Let’s Connect</span></button>
-              </HashLink>
-            </span>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </Router>
-  )
-}
+    <header className={`site-nav ${isScrolled ? "site-nav-scrolled" : ""}`}>
+      <div className="section-container nav-inner">
+        <a className="brand-lockup" href="#home" onClick={closeMenu}>
+          <span className="brand-mark">DP</span>
+          <span className="brand-copy">
+            <strong>{site.brand}</strong>
+            <span>{site.role}</span>
+          </span>
+        </a>
+
+        <button
+          className="nav-toggle"
+          type="button"
+          aria-expanded={isMenuOpen}
+          aria-label="Abrir navegacion"
+          onClick={() => setIsMenuOpen((value) => !value)}
+        >
+          {isMenuOpen ? <FiX /> : <FiMenu />}
+        </button>
+
+        <div className={`nav-panel ${isMenuOpen ? "nav-panel-open" : ""}`}>
+          <nav className="nav-links" aria-label="Secciones principales">
+            {SECTION_LINKS.map((link) => (
+              <a
+                key={link.id}
+                className={activeLink === link.id ? "nav-link nav-link-active" : "nav-link"}
+                href={`#${link.id}`}
+                onClick={closeMenu}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="nav-actions">
+            {socialLinks.map((link) => {
+              const Icon = iconMap[link.icon] || FiGithub;
+              const isResume = link.icon === "download";
+
+              return (
+                <a
+                  key={link.label}
+                  className="icon-button"
+                  href={link.href}
+                  target={isResume ? "_self" : "_blank"}
+                  rel="noreferrer"
+                  download={isResume}
+                  aria-label={link.label}
+                  onClick={closeMenu}
+                >
+                  <Icon />
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};

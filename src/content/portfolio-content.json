@@ -24,16 +24,16 @@
     },
     "pills": [
       "React + UX",
-      "Express API",
+      "API edge-ready",
       "Responsive first",
-      "Contact flow seguro"
+      "Contacto con DB y email"
     ],
     "spotlight": {
       "title": "Que hace diferente esta version",
       "items": [
         "Frontend redisenado con identidad visual mas fuerte",
         "Contenido servido por una API propia y reutilizable",
-        "Formulario con validacion, anti-spam y soporte SMTP"
+        "Formulario con validacion, anti-spam y despliegue serverless"
       ]
     },
     "floatingCards": [
@@ -43,7 +43,7 @@
       },
       {
         "label": "Stack base",
-        "value": "React, Node, Express"
+        "value": "React, Cloudflare, Supabase"
       }
     ]
   },
@@ -91,9 +91,9 @@
       "title": "Backend util de verdad",
       "description": "La parte de servidor ahora deja de ser un extra y se convierte en una base funcional.",
       "points": [
-        "Endpoints para contenido, proyectos, skills y salud",
-        "Contacto con validacion y control por tasa",
-        "Configuracion por variables de entorno para correo"
+        "Endpoints listos para Express local y Pages Functions",
+        "Contacto con validacion, Supabase y correo transaccional",
+        "Configuracion por entorno para preview y produccion"
       ]
     }
   ],
@@ -114,10 +114,11 @@
       "items": [
         "Node.js",
         "Express",
+        "Cloudflare Pages Functions",
+        "Supabase",
         "REST API",
-        "Nodemailer",
-        "Validacion de formularios",
-        "Configuracion por entorno"
+        "Correo transaccional",
+        "Validacion de formularios"
       ]
     },
     {
@@ -156,13 +157,13 @@
       "title": "API de Contacto Segura",
       "category": "Backend",
       "year": "2026",
-      "summary": "Backend con endpoints dedicados para contenido y contacto, proteccion anti-spam, validacion de payload y soporte para envio de correo por SMTP.",
-      "impact": "La app deja de depender de integraciones fragiles en el cliente y gana una base backend mas profesional.",
+      "summary": "API preparada para Cloudflare con endpoints serverless, persistencia opcional en Supabase y envio real de correos mediante proveedor transaccional.",
+      "impact": "Convierte el portfolio en una experiencia full-stack lista para preview y produccion, con mensajes trazables y despliegue edge.",
       "stack": [
-        "Node.js",
-        "Express",
-        "CORS",
-        "SMTP"
+        "Cloudflare Pages",
+        "Pages Functions",
+        "Supabase",
+        "Resend API"
       ],
       "links": {
         "github": "https://github.com/danilophx77/portafolioDanyDev.git",
@@ -224,7 +225,7 @@
   ],
   "contact": {
     "headline": "Hablemos de tu siguiente build",
-    "description": "Si quieres renovar tu presencia digital o construir una interfaz desde cero, este portfolio ya esta preparado para recibir mensajes desde una API propia.",
+    "description": "Si quieres renovar tu presencia digital o construir una interfaz desde cero, este portfolio ya esta preparado para recibir mensajes desde una API propia desplegable en edge.",
     "channels": [
       {
         "type": "github",
@@ -247,7 +248,7 @@
     ],
     "form": {
       "successMessage": "Mensaje enviado correctamente. Te respondere lo antes posible.",
-      "queuedMessage": "Mensaje recibido. El backend ya esta listo; solo falta conectar las credenciales SMTP para el envio real por correo.",
+      "queuedMessage": "Mensaje recibido. La integracion serverless ya esta lista; solo falta completar las credenciales de correo para el envio real.",
       "fallbackMessage": "La API de contacto no esta disponible en este momento. Mientras tanto, puedes escribirme por LinkedIn o revisar mi GitHub.",
       "responseTime": "Tiempo estimado de respuesta: menos de 24 horas."
     }

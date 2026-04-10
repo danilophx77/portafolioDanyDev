@@ -1072,3 +1072,15 @@ img {
     flex-direction: column;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .portrait-card img,
+  .availability-dot {
+    animation: none !important;
+  }
+}
+

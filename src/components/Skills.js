@@ -1,4 +1,13 @@
+import { motion } from "framer-motion";
 import { FiCode, FiLayout, FiServer } from "react-icons/fi";
+import {
+  compactStagger,
+  fadeScale,
+  fadeUp,
+  hoverLift,
+  sectionViewport,
+  staggerContainer,
+} from "../lib/motion";
 
 const iconMap = {
   code: FiCode,
@@ -8,24 +17,40 @@ const iconMap = {
 
 export const Skills = ({ capabilities, skillMatrix, workflow }) => {
   return (
-    <section className="section-shell" id="skills">
+    <motion.section
+      className="section-shell"
+      id="skills"
+      initial="hidden"
+      whileInView="show"
+      viewport={sectionViewport}
+      variants={staggerContainer}
+    >
       <div className="section-container">
-        <div className="section-header">
-          <p className="section-eyebrow">Arquitectura y stack</p>
-          <h2>Una base mas fuerte para diseno, desarrollo y evolucion.</h2>
-          <p>
+        <motion.div className="section-header" variants={staggerContainer}>
+          <motion.p className="section-eyebrow" variants={fadeUp}>
+            Arquitectura y stack
+          </motion.p>
+          <motion.h2 variants={fadeUp}>
+            Una base mas fuerte para diseno, desarrollo y evolucion.
+          </motion.h2>
+          <motion.p variants={fadeUp}>
             El portfolio ahora esta construido para comunicar mejor y para
             escalar cambios sin romper su estructura. La parte visual y la
             parte tecnica avanzan juntas.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="capability-grid">
+        <motion.div className="capability-grid" variants={compactStagger}>
           {capabilities.map((capability) => {
             const Icon = iconMap[capability.icon] || FiCode;
 
             return (
-              <article className="capability-card" key={capability.title}>
+              <motion.article
+                className="capability-card"
+                key={capability.title}
+                variants={fadeScale}
+                whileHover={hoverLift}
+              >
                 <div className="capability-icon">
                   <Icon />
                 </div>
@@ -36,21 +61,29 @@ export const Skills = ({ capabilities, skillMatrix, workflow }) => {
                     <li key={point}>{point}</li>
                   ))}
                 </ul>
-              </article>
+              </motion.article>
             );
           })}
-        </div>
+        </motion.div>
 
-        <div className="skills-layout">
-          <article className="matrix-card">
-            <div className="card-heading">
-              <p className="section-eyebrow">Skill matrix</p>
-              <h3>Tecnologias y criterios que sostienen el sitio</h3>
-            </div>
+        <motion.div className="skills-layout" variants={compactStagger}>
+          <motion.article
+            className="matrix-card"
+            variants={fadeScale}
+            whileHover={hoverLift}
+          >
+            <motion.div className="card-heading" variants={staggerContainer}>
+              <motion.p className="section-eyebrow" variants={fadeUp}>
+                Skill matrix
+              </motion.p>
+              <motion.h3 variants={fadeUp}>
+                Tecnologias y criterios que sostienen el sitio
+              </motion.h3>
+            </motion.div>
 
-            <div className="matrix-groups">
+            <motion.div className="matrix-groups" variants={compactStagger}>
               {skillMatrix.map((group) => (
-                <section className="matrix-group" key={group.title}>
+                <motion.section className="matrix-group" key={group.title} variants={fadeUp}>
                   <h4>{group.title}</h4>
                   <div className="chip-list">
                     {group.items.map((item) => (
@@ -59,20 +92,28 @@ export const Skills = ({ capabilities, skillMatrix, workflow }) => {
                       </span>
                     ))}
                   </div>
-                </section>
+                </motion.section>
               ))}
-            </div>
-          </article>
+            </motion.div>
+          </motion.article>
 
-          <article className="workflow-card">
-            <div className="card-heading">
-              <p className="section-eyebrow">Como trabajo</p>
-              <h3>Proceso corto, claro y orientado a resultado</h3>
-            </div>
+          <motion.article
+            className="workflow-card"
+            variants={fadeScale}
+            whileHover={hoverLift}
+          >
+            <motion.div className="card-heading" variants={staggerContainer}>
+              <motion.p className="section-eyebrow" variants={fadeUp}>
+                Como trabajo
+              </motion.p>
+              <motion.h3 variants={fadeUp}>
+                Proceso corto, claro y orientado a resultado
+              </motion.h3>
+            </motion.div>
 
-            <div className="workflow-list">
+            <motion.div className="workflow-list" variants={compactStagger}>
               {workflow.map((item) => (
-                <div className="workflow-item" key={item.step}>
+                <motion.div className="workflow-item" key={item.step} variants={fadeUp}>
                   <div className="workflow-step">{item.step}</div>
                   <div className="workflow-copy">
                     <h4>{item.title}</h4>
@@ -85,12 +126,13 @@ export const Skills = ({ capabilities, skillMatrix, workflow }) => {
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </article>
-        </div>
+            </motion.div>
+          </motion.article>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
+

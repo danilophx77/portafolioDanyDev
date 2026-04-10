@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import {
   FiClock,
@@ -6,6 +7,15 @@ import {
   FiLinkedin,
   FiSend,
 } from "react-icons/fi";
+import {
+  compactStagger,
+  fadeScale,
+  fadeUp,
+  hoverLift,
+  sectionViewport,
+  staggerContainer,
+  tapShrink,
+} from "../lib/motion";
 
 const initialForm = {
   name: "",
@@ -74,9 +84,9 @@ export const Contact = ({ contact, faq }) => {
       setStatus({
         type: "success",
         message:
-          payload.delivery === "smtp"
-            ? contact.form.successMessage
-            : payload.message || contact.form.queuedMessage,
+          payload.delivery === "queued"
+            ? payload.message || contact.form.queuedMessage
+            : payload.message || contact.form.successMessage,
       });
       setFormValues(initialForm);
     } catch (error) {
@@ -90,32 +100,44 @@ export const Contact = ({ contact, faq }) => {
   };
 
   return (
-    <section className="section-shell" id="contact">
+    <motion.section
+      className="section-shell"
+      id="contact"
+      initial="hidden"
+      whileInView="show"
+      viewport={sectionViewport}
+      variants={staggerContainer}
+    >
       <div className="section-container contact-layout">
-        <div className="contact-sidebar">
-          <div className="contact-card">
-            <p className="section-eyebrow">Contacto</p>
-            <h2>{contact.headline}</h2>
-            <p>{contact.description}</p>
+        <motion.div className="contact-sidebar" variants={staggerContainer}>
+          <motion.div className="contact-card" variants={fadeScale} whileHover={hoverLift}>
+            <motion.p className="section-eyebrow" variants={fadeUp}>
+              Contacto
+            </motion.p>
+            <motion.h2 variants={fadeUp}>{contact.headline}</motion.h2>
+            <motion.p variants={fadeUp}>{contact.description}</motion.p>
 
-            <div className="response-card">
+            <motion.div className="response-card" variants={fadeUp} whileHover={hoverLift}>
               <FiClock />
               <span>{contact.form.responseTime}</span>
-            </div>
+            </motion.div>
 
-            <div className="channel-list">
+            <motion.div className="channel-list" variants={compactStagger}>
               {contact.channels.map((channel) => {
                 const Icon = channelIcons[channel.type] || FiGithub;
                 const isResume = channel.type === "resume";
 
                 return (
-                  <a
+                  <motion.a
                     className="channel-card"
                     key={channel.label}
                     href={channel.href}
                     target={isResume ? "_self" : "_blank"}
                     rel="noreferrer"
                     download={isResume}
+                    variants={fadeUp}
+                    whileHover={hoverLift}
+                    whileTap={tapShrink}
                   >
                     <span className="channel-icon">
                       <Icon />
@@ -124,30 +146,34 @@ export const Contact = ({ contact, faq }) => {
                       <strong>{channel.label}</strong>
                       <span>{channel.value}</span>
                     </span>
-                  </a>
+                  </motion.a>
                 );
               })}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="faq-card">
-            <p className="section-eyebrow">FAQ rapido</p>
-            <div className="faq-list">
+          <motion.div className="faq-card" variants={fadeScale} whileHover={hoverLift}>
+            <motion.p className="section-eyebrow" variants={fadeUp}>
+              FAQ rapido
+            </motion.p>
+            <motion.div className="faq-list" variants={compactStagger}>
               {faq.map((item) => (
-                <details key={item.question}>
+                <motion.details key={item.question} variants={fadeUp}>
                   <summary>{item.question}</summary>
                   <p>{item.answer}</p>
-                </details>
+                </motion.details>
               ))}
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
-        <form className="contact-form-card" onSubmit={handleSubmit}>
-          <div className="card-heading">
-            <p className="section-eyebrow">Formulario conectado a API</p>
-            <h3>Cuentame que quieres construir o mejorar</h3>
-          </div>
+        <motion.form className="contact-form-card" onSubmit={handleSubmit} variants={fadeScale}>
+          <motion.div className="card-heading" variants={staggerContainer}>
+            <motion.p className="section-eyebrow" variants={fadeUp}>
+              Formulario conectado a API
+            </motion.p>
+            <motion.h3 variants={fadeUp}>Cuentame que quieres construir o mejorar</motion.h3>
+          </motion.div>
 
           <div className="form-grid">
             <label>
@@ -207,18 +233,38 @@ export const Contact = ({ contact, faq }) => {
             </label>
           </div>
 
-          {status.message ? (
-            <div className={status.type === "success" ? "form-status form-status-success" : "form-status form-status-error"}>
-              {status.message}
-            </div>
-          ) : null}
+          <AnimatePresence initial={false} mode="wait">
+            {status.message ? (
+              <motion.div
+                key={`${status.type}-${status.message}`}
+                className={
+                  status.type === "success"
+                    ? "form-status form-status-success"
+                    : "form-status form-status-error"
+                }
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {status.message}
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
 
-          <button className="button-primary contact-submit" type="submit" disabled={isSubmitting}>
+          <motion.button
+            className="button-primary contact-submit"
+            type="submit"
+            disabled={isSubmitting}
+            whileHover={hoverLift}
+            whileTap={tapShrink}
+          >
             <span>{isSubmitting ? "Enviando..." : "Enviar mensaje"}</span>
             <FiSend />
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
       </div>
-    </section>
+    </motion.section>
   );
 };
+

@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "portafolio-danydev",
+  "compatibility_date": "2026-03-26",
+  "pages_build_output_dir": "./build",
+  "placement": {
+    "mode": "smart"
+  },
+  "vars": {
+    "APP_ENV": "preview",
+    "CONTACT_RATE_WINDOW_MINUTES": "15",
+    "CONTACT_RATE_MAX_REQUESTS": "5",
+    "CONTACT_SOURCE": "portfolio"
+  },
+  "env": {
+    "preview": {
+      "vars": {
+        "APP_ENV": "preview",
+        "CONTACT_SOURCE": "portfolio-preview"
+      }
+    },
+    "production": {
+      "vars": {
+        "APP_ENV": "production",
+        "CONTACT_SOURCE": "portfolio-production"
+      }
+    }
+  }
+}

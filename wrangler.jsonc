@@ -21,6 +21,13 @@
   },
   "env": {
     "preview": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "portfolio-contact-db",
+          "database_id": "7b40c8ae-e76b-4089-bf4f-1b940d649b54"
+        }
+      ],
       "vars": {
         "APP_ENV": "preview",
         "CONTACT_RATE_WINDOW_MINUTES": "15",
@@ -29,6 +36,13 @@
       }
     },
     "production": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "portfolio-contact-db",
+          "database_id": "7b40c8ae-e76b-4089-bf4f-1b940d649b54"
+        }
+      ],
       "vars": {
         "APP_ENV": "production",
         "CONTACT_RATE_WINDOW_MINUTES": "15",

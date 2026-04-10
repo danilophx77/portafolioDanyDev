@@ -10,9 +10,6 @@ const sanitizeField = (value) => String(value || "").trim();
 
 const encodeBase64 = (value) => btoa(String(value));
 
-const getSupabaseToken = (env) =>
-  String(env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY || "").trim();
-
 export const getClientIp = (request) => {
   const cfConnectingIp = request.headers.get("CF-Connecting-IP");
 
@@ -95,30 +92,9 @@ export const hashClientIp = async (ipAddress, salt = "") => {
     .join("");
 };
 
-const createSupabaseRequest = (env, path, init = {}) => {
-  const token = getSupabaseToken(env);
-  const baseUrl = String(env.SUPABASE_URL || "").trim();
+// --- D1 Database helpers ---
 
-  if (!baseUrl || !token) {
-    throw new Error("Supabase no esta configurado.");
-  }
-
-  const headers = new Headers(init.headers || {});
-  headers.set("apikey", token);
-  headers.set("Authorization", `Bearer ${token}`);
-
-  if (init.body && !headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json");
-  }
-
-  return fetch(`${baseUrl}/rest/v1/${path}`, {
-    ...init,
-    headers,
-  });
-};
-
-export const isSupabaseEnabled = (env) =>
-  Boolean(String(env.SUPABASE_URL || "").trim() && getSupabaseToken(env));
+export const isD1Enabled = (env) => Boolean(env.DB);
 
 export const isResendEnabled = (env) =>
   Boolean(
@@ -127,86 +103,76 @@ export const isResendEnabled = (env) =>
       String(env.CONTACT_FROM_EMAIL || "").trim()
   );
 
-export const checkSupabaseRateLimit = async (env, ipHash, windowMinutes, maxRequests) => {
-  if (!isSupabaseEnabled(env) || !ipHash) {
+export const checkD1RateLimit = async (env, ipHash, windowMinutes, maxRequests) => {
+  if (!isD1Enabled(env) || !ipHash) {
     return false;
   }
 
-  const table = String(env.SUPABASE_CONTACT_TABLE || "contact_messages").trim();
   const windowStart = new Date(Date.now() - windowMinutes * 60 * 1000).toISOString();
-  const params = new URLSearchParams({
-    select: "id",
-    ip_hash: `eq.${ipHash}`,
-    created_at: `gte.${windowStart}`,
-    order: "created_at.desc",
-    limit: String(maxRequests),
-  });
 
-  const response = await createSupabaseRequest(env, `${table}?${params.toString()}`);
+  const result = await env.DB.prepare(
+    "SELECT COUNT(*) as count FROM contact_messages WHERE ip_hash = ? AND created_at >= ?"
+  )
+    .bind(ipHash, windowStart)
+    .first();
 
-  if (!response.ok) {
-    throw new Error(`Supabase rate limit query failed with status ${response.status}`);
-  }
-
-  const rows = await response.json();
-  return Array.isArray(rows) && rows.length >= maxRequests;
+  return result && result.count >= maxRequests;
 };
 
-export const insertSupabaseContact = async (env, submission, metadata) => {
-  if (!isSupabaseEnabled(env)) {
+export const insertD1Contact = async (env, submission, metadata) => {
+  if (!isD1Enabled(env)) {
     return null;
   }
 
-  const table = String(env.SUPABASE_CONTACT_TABLE || "contact_messages").trim();
-  const response = await createSupabaseRequest(env, table, {
-    method: "POST",
-    headers: {
-      Prefer: "return=representation",
-    },
-    body: JSON.stringify({
-      name: submission.name,
-      email: submission.email,
-      subject: submission.subject,
-      message: submission.message,
-      company: submission.company,
-      ip_hash: metadata.ipHash,
-      origin: metadata.origin,
-      user_agent: metadata.userAgent,
-      source: metadata.source,
-      delivery_status: metadata.deliveryStatus || "received",
-      email_status: metadata.emailStatus || "pending",
-    }),
-  });
+  const id = crypto.randomUUID();
 
-  if (!response.ok) {
-    throw new Error(`Supabase insert failed with status ${response.status}`);
-  }
+  await env.DB.prepare(
+    `INSERT INTO contact_messages (id, name, email, subject, message, company, ip_hash, origin, user_agent, source, delivery_status, email_status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  )
+    .bind(
+      id,
+      submission.name,
+      submission.email,
+      submission.subject,
+      submission.message,
+      submission.company,
+      metadata.ipHash,
+      metadata.origin,
+      metadata.userAgent,
+      metadata.source,
+      metadata.deliveryStatus || "received",
+      metadata.emailStatus || "pending"
+    )
+    .run();
 
-  const rows = await response.json();
-  return Array.isArray(rows) ? rows[0] || null : null;
+  return { id };
 };
 
-export const updateSupabaseContact = async (env, recordId, updates) => {
-  if (!isSupabaseEnabled(env) || !recordId) {
+export const updateD1Contact = async (env, recordId, updates) => {
+  if (!isD1Enabled(env) || !recordId) {
     return;
   }
 
-  const table = String(env.SUPABASE_CONTACT_TABLE || "contact_messages").trim();
-  const params = new URLSearchParams({
-    id: `eq.${recordId}`,
-  });
+  const setClauses = [];
+  const values = [];
 
-  const response = await createSupabaseRequest(env, `${table}?${params.toString()}`, {
-    method: "PATCH",
-    headers: {
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify(updates),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Supabase update failed with status ${response.status}`);
+  for (const [key, value] of Object.entries(updates)) {
+    setClauses.push(`${key} = ?`);
+    values.push(value);
   }
+
+  if (setClauses.length === 0) {
+    return;
+  }
+
+  values.push(recordId);
+
+  await env.DB.prepare(
+    `UPDATE contact_messages SET ${setClauses.join(", ")} WHERE id = ?`
+  )
+    .bind(...values)
+    .run();
 };
 
 export const sendTransactionalEmail = async (env, submission) => {

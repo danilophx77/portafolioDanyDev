@@ -1,13 +1,13 @@
 import { getPortfolioContent } from "../_lib/content";
 import {
-  checkSupabaseRateLimit,
+  checkD1RateLimit,
   getClientIp,
   hashClientIp,
-  insertSupabaseContact,
+  insertD1Contact,
   isResendEnabled,
   normalizeSubmission,
   sendTransactionalEmail,
-  updateSupabaseContact,
+  updateD1Contact,
   validateSubmission,
 } from "../_lib/contact";
 import { json, toNumber } from "../_lib/http";
@@ -85,7 +85,7 @@ export const onRequestPost = async ({ env, request }) => {
   let storedRecord = null;
 
   try {
-    const isRateLimited = await checkSupabaseRateLimit(
+    const isRateLimited = await checkD1RateLimit(
       env,
       ipHash,
       rateWindowMinutes,
@@ -109,7 +109,7 @@ export const onRequestPost = async ({ env, request }) => {
   }
 
   try {
-    storedRecord = await insertSupabaseContact(env, submission, {
+    storedRecord = await insertD1Contact(env, submission, {
       ipHash,
       origin,
       userAgent,
@@ -118,7 +118,7 @@ export const onRequestPost = async ({ env, request }) => {
       emailStatus: isResendEnabled(env) ? "pending" : "disabled",
     });
   } catch (error) {
-    console.error("[contact:supabase-insert]", error);
+    console.error("[contact:d1-insert]", error);
   }
 
   if (!isResendEnabled(env)) {
@@ -127,7 +127,7 @@ export const onRequestPost = async ({ env, request }) => {
         ok: true,
         delivery: "queued",
         message: content.contact.form.queuedMessage,
-        storage: storedRecord ? "supabase" : "none",
+        storage: storedRecord ? "d1" : "none",
       },
       {
         status: 202,
@@ -140,7 +140,7 @@ export const onRequestPost = async ({ env, request }) => {
     const delivery = await sendTransactionalEmail(env, submission);
 
     if (storedRecord?.id) {
-      await updateSupabaseContact(env, storedRecord.id, {
+      await updateD1Contact(env, storedRecord.id, {
         delivery_status: "sent",
         email_status: delivery.provider,
         provider_message_id: delivery.id || null,
@@ -152,7 +152,7 @@ export const onRequestPost = async ({ env, request }) => {
         ok: true,
         delivery: "email",
         message: content.contact.form.successMessage,
-        storage: storedRecord ? "supabase" : "none",
+        storage: storedRecord ? "d1" : "none",
       },
       {
         status: 200,
@@ -164,13 +164,13 @@ export const onRequestPost = async ({ env, request }) => {
 
     try {
       if (storedRecord?.id) {
-        await updateSupabaseContact(env, storedRecord.id, {
+        await updateD1Contact(env, storedRecord.id, {
           delivery_status: "failed",
           email_status: "failed",
         });
       }
     } catch (updateError) {
-      console.error("[contact:supabase-update]", updateError);
+      console.error("[contact:d1-update]", updateError);
     }
 
     return json(
